@@ -21,14 +21,12 @@
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 #
-ghcr.io:
-  images:
-    k3d-io/k3d-tools:
-      - 5.4.9
 docker.io:
   images:
     rancher/k3s:
       - v1.25.7-k3s1
+    rancher/k3d-tools:
+      - 5.4.9
 
 artifactory.algol60.net/csm-docker/stable:
   images:
