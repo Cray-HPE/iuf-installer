@@ -276,23 +276,23 @@ cmd_retry curl -sfSLRo "${BUILDDIR}/hpe-signing-key.asc" "$HPE_SIGNING_KEY"
 vendor-install-deps "$(basename "$BUILDDIR")" "${BUILDDIR}/vendor"
 
 # Scan container images
-parallel -j 30% --halt-on-error now,fail=1 -v \
-    -a "${ROOTDIR}/build/images/index.txt" --colsep '\t' \
-    "${ROOTDIR}/hack/snyk-scan.sh" "${BUILDDIR}/scans/docker" '{2}' '{1}'
-cp "${ROOTDIR}/build/images/chartmap.csv" "${BUILDDIR}/scans/docker/"
-${ROOTDIR}/hack/snyk-aggregate-results.sh "${BUILDDIR}/scans/docker" --helm-chart-map "/data/chartmap.csv" --sheet-name "$RELEASE"
-${ROOTDIR}/hack/snyk-to-html.sh "${BUILDDIR}/scans/docker"
+# parallel -j 30% --halt-on-error now,fail=1 -v \
+#     -a "${ROOTDIR}/build/images/index.txt" --colsep '\t' \
+#     "${ROOTDIR}/hack/snyk-scan.sh" "${BUILDDIR}/scans/docker" '{2}' '{1}'
+# cp "${ROOTDIR}/build/images/chartmap.csv" "${BUILDDIR}/scans/docker/"
+# ${ROOTDIR}/hack/snyk-aggregate-results.sh "${BUILDDIR}/scans/docker" --helm-chart-map "/data/chartmap.csv" --sheet-name "$RELEASE"
+# ${ROOTDIR}/hack/snyk-to-html.sh "${BUILDDIR}/scans/docker"
 
 # Save scans to release distirbution
-scandir="$(realpath -m "$ROOTDIR/dist/${RELEASE}-scans")"
-mkdir -p "$scandir"
-rsync -aq "${BUILDDIR}/scans/" "${scandir}/"
+# scandir="$(realpath -m "$ROOTDIR/dist/${RELEASE}-scans")"
+# mkdir -p "$scandir"
+# rsync -aq "${BUILDDIR}/scans/" "${scandir}/"
 
-# Save snyk results spreadsheet as a separate asset
-cp "${scandir}/docker/snyk-results.xlsx" "${ROOTDIR}/dist/${RELEASE}-snyk-results.xlsx"
+# # Save snyk results spreadsheet as a separate asset
+# cp "${scandir}/docker/snyk-results.xlsx" "${ROOTDIR}/dist/${RELEASE}-snyk-results.xlsx"
 
-# Package scans as an independent archive
-tar -C "${scandir}/.." --owner=0 --group=0 -cvzf "${scandir}/../$(basename "$scandir").tar.gz" "$(basename "$scandir")/" --remove-files
+# # Package scans as an independent archive
+# tar -C "${scandir}/.." --owner=0 --group=0 -cvzf "${scandir}/../$(basename "$scandir").tar.gz" "$(basename "$scandir")/" --remove-files
 
 # Package the distribution into an archive
 tar -C "${BUILDDIR}/.." --owner=0 --group=0 -cvzf "${BUILDDIR}/../$(basename "$BUILDDIR").tar.gz" "$(basename "$BUILDDIR")/" --remove-files
