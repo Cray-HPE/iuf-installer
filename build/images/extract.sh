@@ -19,10 +19,10 @@ function extract-charts() {
     | jq -r '.[] | (.releaseName // .name) + "\t" + (.source) + "\t" + (.name) + "\t" + (.version) + "\t" + (.values | [paths(scalars) as $path | {"key": $path | join("."), "value": getpath($path)}] | map("\(.key)=\(.value|tostring)") | join(","))'
 }
 
-function get-customizations() {
-    docker run --rm -i "$YQ_IMAGE" e -o json - < "${ROOTDIR}/validate.customizations.yaml" \
-    | jq -r --arg chart "$1" '.[$chart] | [paths(scalars) as $path | {"key": $path | join("."), "value": getpath($path)}] | map("\(.key)=\(.value|tostring)") | join(",")'
-}
+# function get-customizations() {
+#     docker run --rm -i "$YQ_IMAGE" e -o json - < "${ROOTDIR}/validate.customizations.yaml" \
+#     | jq -r --arg chart "$1" '.[$chart] | [paths(scalars) as $path | {"key": $path | join("."), "value": getpath($path)}] | map("\(.key)=\(.value|tostring)") | join(",")'
+# }
 
 function extract-images() {
     local -a args=("$1/$2")
@@ -43,8 +43,8 @@ function extract-images() {
         chartmap="$(dirname "$5")/chartmap.csv"
     fi
 
-    customizations="$(get-customizations "$2")"
-    [[ -n "$customizations" ]] && flags+=(--set "$customizations")
+    # customizations="$(get-customizations "$2")"
+    # [[ -n "$customizations" ]] && flags+=(--set "$customizations")
 
     # Try to enumerate images via annotations and full manifest rendering
 
