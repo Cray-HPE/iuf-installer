@@ -149,18 +149,7 @@ parallel -j 75% --retries 5 --halt-on-error now,fail=1 -v \
 
 # Sync RPM manifests
 export RPM_SYNC_NUM_CONCURRENT_DOWNLOADS=32
-# rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp2/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp2" -s
-# rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp2-compute/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp2-compute" -s
-# rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp3/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp3" -s
-# rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp3-compute/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp3-compute" -s
 rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp4/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp4" -s
-# rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp4-compute/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp4-compute" -s
-#rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp2/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp2" 
-#rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp2-compute/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp2-compute" 
-#rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp3/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp3" 
-#rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp3-compute/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp3-compute" 
-#rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp4/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp4" 
-#rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp4-compute/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp4-compute" 
 
 # Fix-up cray directories by removing misc subdirectories
 {
@@ -175,124 +164,17 @@ done
 find "${BUILDDIR}/rpm/cray" -empty -type d -delete
 
 # Create CSM repositories
-# createrepo "${BUILDDIR}/rpm/cray/csm/sle-15sp2"
-# createrepo "${BUILDDIR}/rpm/cray/csm/sle-15sp2-compute"
-# createrepo "${BUILDDIR}/rpm/cray/csm/sle-15sp3"
-# createrepo "${BUILDDIR}/rpm/cray/csm/sle-15sp3-compute"
 createrepo "${BUILDDIR}/rpm/cray/csm/sle-15sp4"
-# createrepo "${BUILDDIR}/rpm/cray/csm/sle-15sp4-compute"
-
-# # Extract docs RPM into release
-# mkdir -p "${BUILDDIR}/tmp/docs"
-# (
-#     cd "${BUILDDIR}/tmp/docs"
-#     find "${BUILDDIR}/rpm/cray/csm/sle-15sp4" -type f -name docs-csm-\*.rpm | head -n 1 | xargs -n 1 rpm2cpio | cpio -idvm ./usr/share/doc/csm/*
-# )
-# mv "${BUILDDIR}/tmp/docs/usr/share/doc/csm" "${BUILDDIR}/docs"
-
-# # Extract wars RPM into release
-# mkdir -p "${BUILDDIR}/tmp/wars"
-# (
-#     cd "${BUILDDIR}/tmp/wars"
-#     find "${BUILDDIR}/rpm/cray/csm/sle-15sp2" -type f -name csm-install-workarounds-\*.rpm | head -n 1 | xargs -n 1 rpm2cpio | cpio -idvm ./opt/cray/csm/workarounds/*
-#     find . -type f -name '.keep' -delete
-# )
-# mv "${BUILDDIR}/tmp/wars/opt/cray/csm/workarounds" "${BUILDDIR}/workarounds"
 
 # Clean up temp space
 rm -fr "${BUILDDIR}/tmp"
 
-# Download pre-install toolkit
-# NOTE: This value is printed in #livecd-ci-alerts (slack) when a build STARTS.
-# (
-#     cd "${BUILDDIR}"
-#     for url in "${PIT_ASSETS[@]}"; do cmd_retry curl -sfSLOR -u "${ARTIFACTORY_USER}:${ARTIFACTORY_TOKEN}" "$url"; done
-# )
-
-
-# if [[ "${EMBEDDED_REPO_ENABLED:-yes}" = "yes" ]]; then
-#     # Generate node images RPM index
-#     [[ -d "${ROOTDIR}/rpm" ]] || mkdir -p "${ROOTDIR}/rpm"
-#     "${ROOTDIR}/hack/list-squashfs-rpms.sh" \
-#         "${BUILDDIR}"/images/kubernetes/kubernetes-*.squashfs \
-#         "${BUILDDIR}"/images/storage-ceph/storage-ceph-*.squashfs \
-#     | grep -v conntrack-1.1.x86_64 \
-#     > "${ROOTDIR}/rpm/images.rpm-list"
-
-#     #append kernel-default-debuginfo package to rpm list 
-#     if [ ! -z "$KERNEL_DEFAULT_DEBUGINFO_VERSION" ]; then
-#         echo "kernel-default-debuginfo-${KERNEL_DEFAULT_DEBUGINFO_VERSION}" >> "${ROOTDIR}/rpm/images.rpm-list"
-#     fi
-
-#     # Generate pit iso RPM index
-#     "${ROOTDIR}/hack/list-pit-iso-rpms.sh" \
-#         "${BUILDDIR}"/pre-install-toolkit-*.iso \
-#     > "${ROOTDIR}/rpm/pit.rpm-list"
-
-#     # Generate RPM index from pit and node images
-#     #cat "${ROOTDIR}/rpm/images.rpm-list" \
-#     cat "${ROOTDIR}/rpm/pit.rpm-list" "${ROOTDIR}/rpm/images.rpm-list" \
-#     | sort -u \
-#     | grep -v gpg-pubkey \
-#     | grep -v aaa_base \
-#     | "${ROOTDIR}/hack/gen-rpm-index.sh" \
-#     > "${ROOTDIR}/rpm/embedded.yaml"
-    
-#     # Sync RPMs from node images
-#     rpm-sync "${ROOTDIR}/rpm/embedded.yaml" "${BUILDDIR}/rpm/embedded" -s
-
-#     # Fix-up embedded/cray directories by removing misc subdirectories
-#     {
-#         find "${BUILDDIR}/rpm/embedded/cray" -name '*-team' -type d
-#         find "${BUILDDIR}/rpm/embedded/cray" -name 'github' -type d
-#     } | while read path; do
-#         mv "$path"/* "$(dirname "$path")/"
-#         rmdir "$path"
-#     done
-
-#     # Fix-up cray RPMs to use architecture-based subdirectories
-#     find "${BUILDDIR}/rpm/embedded/cray" -name '*.rpm' -type f | while read path; do
-#         archdir="$(dirname "$path")/$(basename "$path" | sed -e 's/^.\+\.\(.\+\)\.rpm$/\1/')"
-#         [[ -d "$archdir" ]] || mkdir -p "$archdir"
-#         mv "$path" "${archdir}/"
-#     done
-
-#     # Ensure we don't ship multiple copies of RPMs already in a CSM repo
-#     find "${BUILDDIR}/rpm" -mindepth 1 -maxdepth 1 -type d ! -name embedded | while read path; do
-#         find "$path" -type f -name "*.rpm" -print0 | xargs -0 basename -a | while read filename; do
-#             find "${BUILDDIR}/rpm/embedded/cray" -type f -name "$filename" -exec rm -rf {} \;
-#         done
-#     done
-
-#     # Create repository for node image RPMs
-#     find "${BUILDDIR}/rpm/embedded" -empty -type d -delete
-#     createrepo "${BUILDDIR}/rpm/embedded"
-# fi
 
 # Download HPE GPG signing key (for verifying signed RPMs)
 cmd_retry curl -sfSLRo "${BUILDDIR}/hpe-signing-key.asc" "$HPE_SIGNING_KEY"
 
 # Save cray/nexus-setup and quay.io/skopeo/stable images for use in install.sh
 vendor-install-deps "$(basename "$BUILDDIR")" "${BUILDDIR}/vendor"
-
-# Scan container images
-# parallel -j 30% --halt-on-error now,fail=1 -v \
-#     -a "${ROOTDIR}/build/images/index.txt" --colsep '\t' \
-#     "${ROOTDIR}/hack/snyk-scan.sh" "${BUILDDIR}/scans/docker" '{2}' '{1}'
-# cp "${ROOTDIR}/build/images/chartmap.csv" "${BUILDDIR}/scans/docker/"
-# ${ROOTDIR}/hack/snyk-aggregate-results.sh "${BUILDDIR}/scans/docker" --helm-chart-map "/data/chartmap.csv" --sheet-name "$RELEASE"
-# ${ROOTDIR}/hack/snyk-to-html.sh "${BUILDDIR}/scans/docker"
-
-# Save scans to release distirbution
-# scandir="$(realpath -m "$ROOTDIR/dist/${RELEASE}-scans")"
-# mkdir -p "$scandir"
-# rsync -aq "${BUILDDIR}/scans/" "${scandir}/"
-
-# # Save snyk results spreadsheet as a separate asset
-# cp "${scandir}/docker/snyk-results.xlsx" "${ROOTDIR}/dist/${RELEASE}-snyk-results.xlsx"
-
-# # Package scans as an independent archive
-# tar -C "${scandir}/.." --owner=0 --group=0 -cvzf "${scandir}/../$(basename "$scandir").tar.gz" "$(basename "$scandir")/" --remove-files
 
 # Package the distribution into an archive
 tar -C "${BUILDDIR}/.." --owner=0 --group=0 -cvzf "${BUILDDIR}/../$(basename "$BUILDDIR").tar.gz" "$(basename "$BUILDDIR")/" --remove-files

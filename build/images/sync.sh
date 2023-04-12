@@ -37,7 +37,7 @@ docker run --rm \
     --retry-times 5 \
     --src-creds "${ARTIFACTORY_USER}:${ARTIFACTORY_TOKEN}" \
     "docker://$image" \
-    dir:/data \
+    dir:/data/$image.tar \
     >&2 || exit 255
 
 # Ensure intermediate directories exist
