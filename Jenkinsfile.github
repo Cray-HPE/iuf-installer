@@ -117,7 +117,7 @@ pipeline {
         }
 
         stage('Release') {
-            when { tag "v*" }
+            when { anyOf { branch 'ci'; tag "v*" } }
 
             environment {
                 RELEASE_NAME = "iuf-installer"
