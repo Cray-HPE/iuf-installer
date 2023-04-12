@@ -34,5 +34,3 @@ artifactory.algol60.net/csm-docker/stable:
   images:
     iuf:
     - v0.1.3
-
-    docker pull rancher/k3s:v1.25.7-k3s1
