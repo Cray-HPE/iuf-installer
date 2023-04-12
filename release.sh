@@ -75,8 +75,8 @@ cmd_retry docker pull "$RPM_TOOLS_IMAGE"
 cmd_retry docker pull "$SKOPEO_IMAGE"
 cmd_retry docker pull "$CRAY_NEXUS_SETUP_IMAGE"
 
-# Build image to aggregate Snyk scan results
-make -C "${ROOTDIR}/security/snyk-aggregate-results"
+# # Build image to aggregate Snyk scan results
+# make -C "${ROOTDIR}/security/snyk-aggregate-results"
 
 #
 # Build
