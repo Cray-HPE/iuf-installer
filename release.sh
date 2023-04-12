@@ -75,9 +75,6 @@ cmd_retry docker pull "$RPM_TOOLS_IMAGE"
 cmd_retry docker pull "$SKOPEO_IMAGE"
 cmd_retry docker pull "$CRAY_NEXUS_SETUP_IMAGE"
 
-# # Build image to aggregate Snyk scan results
-# make -C "${ROOTDIR}/security/snyk-aggregate-results"
-
 #
 # Build
 #
@@ -88,20 +85,15 @@ BUILDDIR="${1:-"$(realpath -m "$ROOTDIR/dist/${RELEASE}")"}"
 [[ -d "$BUILDDIR" ]] && rm -fr "$BUILDDIR"
 mkdir -p "$BUILDDIR"
 
-# Process local files
-rsync -aq "${ROOTDIR}/docs/README" "${BUILDDIR}/"
-rsync -aq "${ROOTDIR}/docs/INSTALL" "${BUILDDIR}/"
-rsync -aq "${ROOTDIR}/CHANGELOG.md" "${BUILDDIR}/"
-
 # Copy install scripts
-rsync -aq "${ROOTDIR}/lib/" "${BUILDDIR}/lib/"
-gen-version-sh "$RELEASE_NAME" "$RELEASE_VERSION" >"${BUILDDIR}/lib/version.sh"
-chmod +x "${BUILDDIR}/lib/version.sh"
-rsync -aq "${ROOTDIR}/vendor/github.hpe.com/hpe/hpc-shastarelm-release/lib/install.sh" "${BUILDDIR}/lib/install.sh"
-rsync -aq "${ROOTDIR}/install.sh" "${BUILDDIR}/"
-rsync -aq "${ROOTDIR}/chrony/" "${BUILDDIR}/chrony/"
-rsync -aq "${ROOTDIR}/upgrade.sh" "${BUILDDIR}/"
-rsync -aq "${ROOTDIR}/hack/load-container-image.sh" "${BUILDDIR}/hack/"
+# rsync -aq "${ROOTDIR}/lib/" "${BUILDDIR}/lib/"
+# gen-version-sh "$RELEASE_NAME" "$RELEASE_VERSION" >"${BUILDDIR}/lib/version.sh"
+# chmod +x "${BUILDDIR}/lib/version.sh"
+# rsync -aq "${ROOTDIR}/vendor/github.hpe.com/hpe/hpc-shastarelm-release/lib/install.sh" "${BUILDDIR}/lib/install.sh"
+# rsync -aq "${ROOTDIR}/install.sh" "${BUILDDIR}/"
+# rsync -aq "${ROOTDIR}/chrony/" "${BUILDDIR}/chrony/"
+# rsync -aq "${ROOTDIR}/upgrade.sh" "${BUILDDIR}/"
+# rsync -aq "${ROOTDIR}/hack/load-container-image.sh" "${BUILDDIR}/hack/"
 
 # Copy manifests
 rsync -aq "${ROOTDIR}/manifests/" "${BUILDDIR}/manifests/"
@@ -125,27 +117,27 @@ EOF
 done
 
 # Embed the CSM release version into the csm-config and cray-csm-barebones-recipe-install charts
-yq write -i ${BUILDDIR}/manifests/sysmgmt.yaml 'spec.charts.(name==csm-config).values.cray-import-config.import_job.CF_IMPORT_PRODUCT_NAME' "$RELEASE_NAME"
-yq write -i ${BUILDDIR}/manifests/sysmgmt.yaml 'spec.charts.(name==csm-config).values.cray-import-config.import_job.CF_IMPORT_PRODUCT_VERSION' "$RELEASE_VERSION"
-yq write -i ${BUILDDIR}/manifests/sysmgmt.yaml 'spec.charts.(name==csm-config).values.cray-import-config.import_job.CF_IMPORT_GITEA_REPO' "${RELEASE_NAME}-config-management"
-yq write -i ${BUILDDIR}/manifests/sysmgmt.yaml 'spec.charts.(name==cray-csm-barebones-recipe-install).values.cray-import-kiwi-recipe-image.import_job.PRODUCT_VERSION' "${RELEASE_VERSION}"
-yq write -i ${BUILDDIR}/manifests/sysmgmt.yaml 'spec.charts.(name==cray-csm-barebones-recipe-install).values.cray-import-kiwi-recipe-image.import_job.PRODUCT_NAME' "${RELEASE_NAME}"
-yq write -i ${BUILDDIR}/manifests/sysmgmt.yaml 'spec.charts.(name==cray-csm-barebones-recipe-install).values.cray-import-kiwi-recipe-image.import_job.name' "${RELEASE_NAME}-image-recipe-import-${RELEASE_VERSION}"
+# yq write -i ${BUILDDIR}/manifests/sysmgmt.yaml 'spec.charts.(name==csm-config).values.cray-import-config.import_job.CF_IMPORT_PRODUCT_NAME' "$RELEASE_NAME"
+# yq write -i ${BUILDDIR}/manifests/sysmgmt.yaml 'spec.charts.(name==csm-config).values.cray-import-config.import_job.CF_IMPORT_PRODUCT_VERSION' "$RELEASE_VERSION"
+# yq write -i ${BUILDDIR}/manifests/sysmgmt.yaml 'spec.charts.(name==csm-config).values.cray-import-config.import_job.CF_IMPORT_GITEA_REPO' "${RELEASE_NAME}-config-management"
+# yq write -i ${BUILDDIR}/manifests/sysmgmt.yaml 'spec.charts.(name==cray-csm-barebones-recipe-install).values.cray-import-kiwi-recipe-image.import_job.PRODUCT_VERSION' "${RELEASE_VERSION}"
+# yq write -i ${BUILDDIR}/manifests/sysmgmt.yaml 'spec.charts.(name==cray-csm-barebones-recipe-install).values.cray-import-kiwi-recipe-image.import_job.PRODUCT_NAME' "${RELEASE_NAME}"
+# yq write -i ${BUILDDIR}/manifests/sysmgmt.yaml 'spec.charts.(name==cray-csm-barebones-recipe-install).values.cray-import-kiwi-recipe-image.import_job.name' "${RELEASE_NAME}-image-recipe-import-${RELEASE_VERSION}"
 
 # Include the tds yaml in the tarball
-cp "${ROOTDIR}/tds_cpu_requests.yaml" "${BUILDDIR}/tds_cpu_requests.yaml"
+# cp "${ROOTDIR}/tds_cpu_requests.yaml" "${BUILDDIR}/tds_cpu_requests.yaml"
 
 # Generate Nexus blob store configuration
-generate-nexus-config blobstore <"${ROOTDIR}/nexus-blobstores.yaml" >"${BUILDDIR}/nexus-blobstores.yaml"
+# generate-nexus-config blobstore <"${ROOTDIR}/nexus-blobstores.yaml" >"${BUILDDIR}/nexus-blobstores.yaml"
 
 # Generate Nexus repositories configuration
 # Update repository names based on the release version
-sed -e "s/-0.0.0/-${RELEASE_VERSION}/g" "${ROOTDIR}/nexus-repositories.yaml" \
-    | generate-nexus-config repository >"${BUILDDIR}/nexus-repositories.yaml"
+# sed -e "s/-0.0.0/-${RELEASE_VERSION}/g" "${ROOTDIR}/nexus-repositories.yaml" \
+#     | generate-nexus-config repository >"${BUILDDIR}/nexus-repositories.yaml"
 
-# Sync shasta-cfg
-mkdir "${BUILDDIR}/shasta-cfg"
-"${ROOTDIR}/vendor/stash.us.cray.com/scm/shasta-cfg/stable/package/make-dist.sh" "${BUILDDIR}/shasta-cfg"
+# # Sync shasta-cfg
+# mkdir "${BUILDDIR}/shasta-cfg"
+# "${ROOTDIR}/vendor/stash.us.cray.com/scm/shasta-cfg/stable/package/make-dist.sh" "${BUILDDIR}/shasta-cfg"
 
 # Sync Helm charts from cache
 rsync -aq "${ROOTDIR}/build/.helm/cache/repository"/*.tgz "${BUILDDIR}/helm"
@@ -157,12 +149,12 @@ parallel -j 75% --retries 5 --halt-on-error now,fail=1 -v \
 
 # Sync RPM manifests
 export RPM_SYNC_NUM_CONCURRENT_DOWNLOADS=32
-rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp2/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp2" -s
-rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp2-compute/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp2-compute" -s
-rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp3/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp3" -s
-rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp3-compute/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp3-compute" -s
+# rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp2/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp2" -s
+# rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp2-compute/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp2-compute" -s
+# rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp3/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp3" -s
+# rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp3-compute/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp3-compute" -s
 rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp4/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp4" -s
-rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp4-compute/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp4-compute" -s
+# rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp4-compute/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp4-compute" -s
 #rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp2/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp2" 
 #rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp2-compute/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp2-compute" 
 #rpm-sync "${ROOTDIR}/rpm/cray/csm/sle-15sp3/index.yaml" "${BUILDDIR}/rpm/cray/csm/sle-15sp3" 
@@ -183,29 +175,29 @@ done
 find "${BUILDDIR}/rpm/cray" -empty -type d -delete
 
 # Create CSM repositories
-createrepo "${BUILDDIR}/rpm/cray/csm/sle-15sp2"
-createrepo "${BUILDDIR}/rpm/cray/csm/sle-15sp2-compute"
-createrepo "${BUILDDIR}/rpm/cray/csm/sle-15sp3"
-createrepo "${BUILDDIR}/rpm/cray/csm/sle-15sp3-compute"
+# createrepo "${BUILDDIR}/rpm/cray/csm/sle-15sp2"
+# createrepo "${BUILDDIR}/rpm/cray/csm/sle-15sp2-compute"
+# createrepo "${BUILDDIR}/rpm/cray/csm/sle-15sp3"
+# createrepo "${BUILDDIR}/rpm/cray/csm/sle-15sp3-compute"
 createrepo "${BUILDDIR}/rpm/cray/csm/sle-15sp4"
-createrepo "${BUILDDIR}/rpm/cray/csm/sle-15sp4-compute"
+# createrepo "${BUILDDIR}/rpm/cray/csm/sle-15sp4-compute"
 
-# Extract docs RPM into release
-mkdir -p "${BUILDDIR}/tmp/docs"
-(
-    cd "${BUILDDIR}/tmp/docs"
-    find "${BUILDDIR}/rpm/cray/csm/sle-15sp4" -type f -name docs-csm-\*.rpm | head -n 1 | xargs -n 1 rpm2cpio | cpio -idvm ./usr/share/doc/csm/*
-)
-mv "${BUILDDIR}/tmp/docs/usr/share/doc/csm" "${BUILDDIR}/docs"
+# # Extract docs RPM into release
+# mkdir -p "${BUILDDIR}/tmp/docs"
+# (
+#     cd "${BUILDDIR}/tmp/docs"
+#     find "${BUILDDIR}/rpm/cray/csm/sle-15sp4" -type f -name docs-csm-\*.rpm | head -n 1 | xargs -n 1 rpm2cpio | cpio -idvm ./usr/share/doc/csm/*
+# )
+# mv "${BUILDDIR}/tmp/docs/usr/share/doc/csm" "${BUILDDIR}/docs"
 
-# Extract wars RPM into release
-mkdir -p "${BUILDDIR}/tmp/wars"
-(
-    cd "${BUILDDIR}/tmp/wars"
-    find "${BUILDDIR}/rpm/cray/csm/sle-15sp2" -type f -name csm-install-workarounds-\*.rpm | head -n 1 | xargs -n 1 rpm2cpio | cpio -idvm ./opt/cray/csm/workarounds/*
-    find . -type f -name '.keep' -delete
-)
-mv "${BUILDDIR}/tmp/wars/opt/cray/csm/workarounds" "${BUILDDIR}/workarounds"
+# # Extract wars RPM into release
+# mkdir -p "${BUILDDIR}/tmp/wars"
+# (
+#     cd "${BUILDDIR}/tmp/wars"
+#     find "${BUILDDIR}/rpm/cray/csm/sle-15sp2" -type f -name csm-install-workarounds-\*.rpm | head -n 1 | xargs -n 1 rpm2cpio | cpio -idvm ./opt/cray/csm/workarounds/*
+#     find . -type f -name '.keep' -delete
+# )
+# mv "${BUILDDIR}/tmp/wars/opt/cray/csm/workarounds" "${BUILDDIR}/workarounds"
 
 # Clean up temp space
 rm -fr "${BUILDDIR}/tmp"
