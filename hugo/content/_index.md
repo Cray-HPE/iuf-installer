@@ -12,7 +12,7 @@ It supports initializing a set of configuration files from command line flags an
 These instructions are only valid for the Shasta v1.4+ release with CSM \>=0.8.0 and iuf-installer \>=1.5.0
 {{% /notice %}}
 
-# Site Survey {{% button href="https://github.com/Cray-HPE/cray-site-init/releases" icon="fas fa-download" %}}Get iuf-installer{{% /button %}}
+# Site Survey {{% button href="https://github.com/Cray-HPE/iuf-installer/releases" icon="fas fa-download" %}}Get iuf-installer{{% /button %}}
 
 
 The Site Survey CSM Questionnaire outlines information needed to begin an installation.  It details the information that should be gathered prior to running `iuf-installer config init`, which will create the configuration payload needed to begin an installation.

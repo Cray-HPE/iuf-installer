@@ -14,7 +14,7 @@ A clear and concise description of what the bug is.
 
 If able, please include:
 - The output of `iuf-installer version`
-- (for SUSE systems) The RPM metadata of `rpm -qi cray-site-init`
+- (for SUSE systems) The RPM metadata of `rpm -qi iuf-installer`
 - The `system_config.yaml` file if this is regarding a bug from `iuf-installer config init` output.
 
 **To Reproduce**
