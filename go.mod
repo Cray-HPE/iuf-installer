@@ -3,15 +3,15 @@ module github.com/Cray-HPE/iuf-installer
 go 1.18
 
 require (
-	github.com/golang/mock v1.5.0
+	github.com/golang/mock v1.6.0
 	github.com/k3d-io/k3d/v5 v5.4.9
 	github.com/spf13/cobra v1.7.0
 )
 
 require (
-	github.com/BurntSushi/toml v0.4.1 // indirect
+	github.com/BurntSushi/toml v1.0.0 // indirect
 	github.com/Microsoft/go-winio v0.6.0 // indirect
-	github.com/Microsoft/hcsshim v0.8.22 // indirect
+	github.com/Microsoft/hcsshim v0.9.2 // indirect
 	github.com/VividCortex/ewma v1.2.0 // indirect
 	github.com/acarl005/stripansi v0.0.0-20180116102854-5a71ef0e047d // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
@@ -19,7 +19,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e // indirect
 	github.com/containerd/cgroups v1.0.1 // indirect
-	github.com/containerd/stargz-snapshotter/estargz v0.9.0 // indirect
+	github.com/containerd/stargz-snapshotter/estargz v0.10.1 // indirect
 	github.com/containernetworking/cni v0.8.1 // indirect
 	github.com/containernetworking/plugins v0.9.1 // indirect
 	github.com/containers/buildah v1.23.1 // indirect
@@ -27,8 +27,8 @@ require (
 	github.com/containers/image/v5 v5.17.0 // indirect
 	github.com/containers/libtrust v0.0.0-20190913040956-14b96171aa3b // indirect
 	github.com/containers/ocicrypt v1.1.2 // indirect
-	github.com/containers/psgo v1.7.2-0.20220414132323-3ae304491648 // indirect
-	github.com/containers/storage v1.37.2 // indirect
+	github.com/containers/psgo v1.7.2 // indirect
+	github.com/containers/storage v1.38.0 // indirect
 	github.com/cri-o/ocicni v0.2.1-0.20210621164014-d0acc7862283 // indirect
 	github.com/cyphar/filepath-securejoin v0.2.3 // indirect
 	github.com/disiqueira/gotree/v3 v3.0.2 // indirect
