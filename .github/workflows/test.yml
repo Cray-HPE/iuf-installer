@@ -27,7 +27,13 @@ jobs:
     
     - name: install dependencies
       run: |
-        sudo apt-get update -y && sudo apt-get install -y libbtrfs-dev
+        sudo apt-get update -y && sudo apt-get install -y \
+          libbtrfs-dev \
+          libdevmapper-dev \
+          libgpgme11-dev \
+          go-md2man \
+          libglib2.0-dev \
+          libostree-dev
 
     - name: Test
       run: |

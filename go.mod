@@ -1,6 +1,6 @@
 module github.com/Cray-HPE/iuf-installer
 
-go 1.18
+go 1.19
 
 require (
 	github.com/golang/mock v1.5.0
