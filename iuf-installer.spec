@@ -67,7 +67,6 @@ mkdir -pv ${RPM_BUILD_ROOT}/usr/bin/
 cp -pv bin/iuf-installer ${RPM_BUILD_ROOT}/usr/bin/iuf-installer
 
 mkdir -pv ${RPM_BUILD_ROOT}/usr/local/bin/
-cp -pv scripts/write-livecd.sh ${RPM_BUILD_ROOT}/usr/local/bin/write-livecd.sh
 
 %clean
 
@@ -76,6 +75,5 @@ cp -pv scripts/write-livecd.sh ${RPM_BUILD_ROOT}/usr/local/bin/write-livecd.sh
 %license LICENSE
 %defattr(755,root,root)
 /usr/bin/iuf-installer
-/usr/local/bin/write-livecd.sh
 
 %changelog
