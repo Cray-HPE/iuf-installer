@@ -25,6 +25,7 @@ type imageService struct {
 	podmanService PodmanService
 }
 
+// NewImageService creates a new image service
 func NewImageService(podmanService PodmanService) ImageService {
 	return &imageService{
 		podmanService: podmanService,

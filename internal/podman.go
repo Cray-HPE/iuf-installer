@@ -23,6 +23,7 @@ type podmanService struct {
 	Dbus *dbus.Conn
 }
 
+// NewPodmanService creates a new podman service
 func NewPodmanService() PodmanService {
 	conn, err := dbus.New()
 	if err != nil {
