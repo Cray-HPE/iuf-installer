@@ -27,7 +27,7 @@ Version: %(echo ${VERSION})
 Release: 1
 Source: %{name}-%{version}.tar.bz2
 Vendor: Cray Inc.
-Provides: csi
+Provides: iuf-installer
 
 %ifarch %ix86
     %global GOARCH 386

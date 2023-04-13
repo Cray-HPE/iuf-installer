@@ -1,6 +1,6 @@
-baseURL = "https://cray-hpe.github.io/cray-site-init/"
+baseURL = "https://cray-hpe.github.io/iuf-installer/"
 languageCode = "en-us"
-title = "Cray Site Init"
+title = "IUF Installer"
 theme = "learn"
 publishDir = "../docs"
 
@@ -15,7 +15,7 @@ editURL = "https://github.com/Cray-HPE/cray-site-init/tree/main/hugo/content/"
 # Author of the site, will be used in meta information
 author = "Cray-HPE"
 # Description of the site, will be used in meta information
-description = "Cray Site Initializer documentation"
+description = "IUF Installer documentation"
 # Shows a checkmark for visited pages on the menu
 showVisitedLinks = true
 # Disable search function. It will hide search bar
