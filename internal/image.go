@@ -104,26 +104,26 @@ func (i *imageService) checkIfImagesExist(images []string) (bool, error) {
 	}
 
 	// Establish a connection to the Podman service
-	ctx := context.Background()
-	conn, err := bindings.NewConnection(ctx, "unix:///run/podman/podman.sock")
-	if err != nil {
-		logger.Log().Errorf("Error connecting to Podman:", err)
-		return false, err
-	}
-	defer conn.Close()
+	// ctx := context.Background()
+	// conn, err := bindings.NewConnection(ctx, "unix:///run/podman/podman.sock")
+	// if err != nil {
+	// 	logger.Log().Errorf("Error connecting to Podman:", err)
+	// 	return false, err
+	// }
+	// defer conn.Close()
 
-	for _, image := range images {
-		filter := fmt.Sprintf("reference=%s", image)
-		options := entities.ImageListOptions{
-			Filters: []string{filter},
-		}
+	// for _, image := range images {
+	// 	filter := fmt.Sprintf("reference=%s", image)
+	// 	options := entities.ImageListOptions{
+	// 		Filters: []string{filter},
+	// 	}
 
-		imgList, err := images.List(ctx, conn, options)
-		if err != nil {
-			return false, err
-		}
+	// 	imgList, err := images.List(ctx, conn, options)
+	// 	if err != nil {
+	// 		return false, err
+	// 	}
 
-		return len(imgList) > 0, nil
+	// 	return len(imgList) > 0, nil
 	}
 	return false, nil
 }
