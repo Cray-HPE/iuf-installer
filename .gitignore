@@ -1,0 +1,6 @@
+bin/
+coverage*
+build/
+!cmd/embeded-files/*
+dist/
+system_config.*

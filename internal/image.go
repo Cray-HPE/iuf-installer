@@ -3,14 +3,10 @@ package internal
 import (
 	"archive/tar"
 	"compress/gzip"
-	"context"
-	"fmt"
 	"io"
 	"os"
 	"strings"
 
-	"github.com/containers/podman/v3/pkg/bindings"
-	"github.com/containers/podman/v3/pkg/domain/entities"
 	"github.com/k3d-io/k3d/v5/pkg/logger"
 	"github.com/k3d-io/k3d/v5/pkg/types"
 )
