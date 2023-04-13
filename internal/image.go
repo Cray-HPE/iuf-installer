@@ -124,6 +124,6 @@ func (i *imageService) checkIfImagesExist(images []string) (bool, error) {
 	// 	}
 
 	// 	return len(imgList) > 0, nil
-	}
+	// }
 	return false, nil
 }
