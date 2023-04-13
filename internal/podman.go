@@ -7,19 +7,22 @@ import (
 	"github.com/coreos/go-systemd/v22/dbus"
 	"github.com/k3d-io/k3d/v5/pkg/logger"
 )
+// ServiceName = "podman.socket"
+const ServiceName = "podman.socket"
 
-const SERVICE_NAME = "podman.socket"
-
+// PodmanService is the interface for the podman service
 type PodmanService interface {
 	PodmanInit() error
 	isSocketServiceRunning() (bool, error)
 	startSocketService() error
 }
 
+// podmanService is the implementation of the podman service
 type podmanService struct {
 	Dbus *dbus.Conn
 }
 
+// PodmanServiceInstance is the instance of the podman service
 var PodmanServiceInstance PodmanService = newPodmanService()
 
 func newPodmanService() PodmanService {

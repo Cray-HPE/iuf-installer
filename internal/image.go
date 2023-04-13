@@ -17,16 +17,19 @@ import (
 
 //go:generate mockgen -destination=../mocks/internal/image.go -package=mocks -source=image.go
 
+// ImageService is the interface for the image service
 type ImageService interface {
 	LoadImages() error
 	getImageNamesFromTarball() ([]string, error)
 	checkIfImagesExist(images []string) (bool, error)
 }
 
+// imageService is the implementation of the image service
 type imageService struct {
 	podmanService PodmanService
 }
 
+// ImageServiceInstance is the instance of the image service
 var ImageServiceInstance ImageService = newImageService(PodmanServiceInstance)
 
 func newImageService(podmanService PodmanService) ImageService {
