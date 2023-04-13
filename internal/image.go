@@ -25,10 +25,7 @@ type imageService struct {
 	podmanService PodmanService
 }
 
-// ImageServiceInstance is the instance of the image service
-var ImageServiceInstance ImageService = newImageService(PodmanServiceInstance)
-
-func newImageService(podmanService PodmanService) ImageService {
+func NewImageService(podmanService PodmanService) ImageService {
 	return &imageService{
 		podmanService: podmanService,
 	}

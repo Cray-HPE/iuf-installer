@@ -51,16 +51,23 @@ func init() {
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
 	// initCmd.PersistentFlags().String("foo", "", "A help for foo")
+	initCmd.PersistentFlags().StringVarP(&internal.AppConfig.Tarball, "tarfile", "t", "", "Path to tarfile")
+	initCmd.MarkPersistentFlagRequired("tarfile")
+
+	initCmd.PersistentFlags().BoolVarP(&internal.AppConfig.Force, "force", "f", false, "delete previous install and start over")
 }
 
 func casmInit(cmd *cobra.Command, args []string) error {
+	PodmanServiceInstance := internal.NewPodmanService()
+	ImageServiceInstance := internal.NewImageService(PodmanServiceInstance)
+
 	// configure podman
-	err := internal.PodmanServiceInstance.PodmanInit()
+	err := PodmanServiceInstance.PodmanInit()
 	if err != nil {
 		return err
 	}
 	// load local image into podman
-	err = internal.ImageServiceInstance.LoadImages()
+	err = ImageServiceInstance.LoadImages()
 	if err != nil {
 		return err
 	}

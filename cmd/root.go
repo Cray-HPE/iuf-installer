@@ -27,7 +27,6 @@ package cmd
 import (
 	"os"
 
-	"github.com/Cray-HPE/iuf-installer/internal"
 	"github.com/spf13/cobra"
 )
 
@@ -52,8 +51,4 @@ func init() {
 	// will be global for your application.
 
 	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.iuf-installer.yaml)")
-	rootCmd.PersistentFlags().StringVarP(&internal.AppConfig.Tarball, "tarfile", "t", "", "Path to tarfile")
-	rootCmd.MarkPersistentFlagRequired("tarfile")
-
-	rootCmd.PersistentFlags().BoolVarP(&internal.AppConfig.Force, "force", "f", false, "delete previous install and start over")
 }

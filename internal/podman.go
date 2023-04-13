@@ -23,10 +23,7 @@ type podmanService struct {
 	Dbus *dbus.Conn
 }
 
-// PodmanServiceInstance is the instance of the podman service
-var PodmanServiceInstance PodmanService = newPodmanService()
-
-func newPodmanService() PodmanService {
+func NewPodmanService() PodmanService {
 	conn, err := dbus.New()
 	if err != nil {
 		logger.Log().Fatalln(err)
