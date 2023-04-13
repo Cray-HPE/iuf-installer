@@ -123,7 +123,7 @@ clean:
 
 test: tools
 	mkdir -pv $(TEST_OUTPUT_DIR)/unittest $(TEST_OUTPUT_DIR)/coverage
-	go test ./cmd/... ./internal/... ./pkg/... -v -coverprofile $(TEST_OUTPUT_DIR)/coverage.out -covermode count | tee "$(TEST_OUTPUT_DIR)/testing.out"
+	go test ./cmd/... ./internal/... -v -coverprofile $(TEST_OUTPUT_DIR)/coverage.out -covermode count | tee "$(TEST_OUTPUT_DIR)/testing.out"
 	cat "$(TEST_OUTPUT_DIR)/testing.out" | go-junit-report | tee "$(TEST_OUTPUT_DIR)/unittest/testing.xml" | tee "$(TEST_OUTPUT_DIR)/unittest/testing.xml"
 	gocover-cobertura < $(TEST_OUTPUT_DIR)/coverage.out > "$(TEST_OUTPUT_DIR)/coverage/coverage.xml"
 	go tool cover -html=$(TEST_OUTPUT_DIR)/coverage.out -o "$(TEST_OUTPUT_DIR)/coverage/coverage.html"
@@ -139,7 +139,6 @@ vet: version
 lint: tools
 	golint -set_exit_status ./cmd/...
 	golint -set_exit_status ./internal/...
-	golint -set_exit_status ./pkg/...
 
 fmt:
 	go fmt ./...
@@ -152,9 +151,9 @@ tidy:
 
 bin/iuf-installer:
 	GOOS=$(GOOS) GOARCH=$(GOARCH) go build -o bin/iuf-installer -ldflags "\
-	-X github.com/Cray-HPE/cray-site-init/pkg/version.version=${.GIT_VERSION} \
-	-X github.com/Cray-HPE/cray-site-init/pkg/version.buildDate=${.BUILDTIME} \
-	-X github.com/Cray-HPE/cray-site-init/pkg/version.sha1ver=${.GIT_COMMIT_AND_BRANCH}"
+	-X github.com/Cray-HPE/iuf-installer/internal/version.version=${.GIT_VERSION} \
+	-X github.com/Cray-HPE/iuf-installer/internal/version.buildDate=${.BUILDTIME} \
+	-X github.com/Cray-HPE/iuf-installer/internal/version.sha1ver=${.GIT_COMMIT_AND_BRANCH}"
 
 rpm_prepare:
 	rm -rf $(BUILD_DIR)
