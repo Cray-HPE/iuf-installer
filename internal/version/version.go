@@ -22,33 +22,40 @@
  OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package cmd
+package version
 
 import (
-	"os"
-
-	"github.com/spf13/cobra"
+	"fmt"
+	"runtime"
 )
 
-// rootCmd represents the base command when called without any subcommands
-var rootCmd = &cobra.Command{
-	Use:   "iuf-installer",
-	Short: "Create a k3d cluster for IUF",
+// Info is heavily informed by the Kubernetes Versioning System.
+type Info struct {
+	Version   string `json:"version"`
+	GitCommit string `json:"gitCommit"`
+	BuildDate string `json:"buildDate"`
+	GoVersion string `json:"goVersion"`
+	Compiler  string `json:"compiler"`
+	Platform  string `json:"platform"`
 }
 
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
-func Execute() {
-	err := rootCmd.Execute()
-	if err != nil {
-		os.Exit(1)
+// String returns info as a human-friendly version string.
+func (info Info) String() string {
+	return info.Version
+}
+
+// Get returns the overall codebase version. It's for detecting
+// what code a binary was built from.
+func Get() Info {
+	// These variables typically come from -ldflags settings and in
+	// their absence fallback to the settings in ./base.go
+
+	return Info{
+		Version:   version,
+		GitCommit: sha1ver,
+		BuildDate: buildDate,
+		GoVersion: runtime.Version(),
+		Compiler:  runtime.Compiler,
+		Platform:  fmt.Sprintf("%s/%s", runtime.GOOS, runtime.GOARCH),
 	}
-}
-
-func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.iuf-installer.yaml)")
 }

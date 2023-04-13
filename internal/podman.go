@@ -8,21 +8,23 @@ import (
 	"github.com/k3d-io/k3d/v5/pkg/logger"
 )
 
-const SERVICE_NAME = "podman.socket"
+// ServiceName = "podman.socket"
+const ServiceName = "podman.socket"
 
+// PodmanService is the interface for the podman service
 type PodmanService interface {
 	PodmanInit() error
 	isSocketServiceRunning() (bool, error)
 	startSocketService() error
 }
 
+// podmanService is the implementation of the podman service
 type podmanService struct {
 	Dbus *dbus.Conn
 }
 
-var PodmanServiceInstance PodmanService = newPodmanService()
-
-func newPodmanService() PodmanService {
+// NewPodmanService creates a new podman service
+func NewPodmanService() PodmanService {
 	conn, err := dbus.New()
 	if err != nil {
 		logger.Log().Fatalln(err)
@@ -42,14 +44,14 @@ func (p *podmanService) PodmanInit() error {
 		return err
 	}
 	if !isRunning {
-		logger.Log().Infof("starting %s\n", SERVICE_NAME)
+		logger.Log().Infof("starting %s\n", ServiceName)
 		err := p.startSocketService()
 		if err != nil {
-			logger.Log().Errorf("Error start service : %s, %s\n", SERVICE_NAME, err)
+			logger.Log().Errorf("Error start service : %s, %s\n", ServiceName, err)
 			return err
 		}
 	}
-	logger.Log().Infof("%s is running\n", SERVICE_NAME)
+	logger.Log().Infof("%s is running\n", ServiceName)
 	return nil
 }
 
@@ -61,7 +63,7 @@ func (p *podmanService) isSocketServiceRunning() (bool, error) {
 	}
 	// Check if the service is running
 	for _, unit := range units {
-		if unit.Name == SERVICE_NAME {
+		if unit.Name == ServiceName {
 			logger.Log().Debugf("unit: %s, state: %s, substate: %s\n", unit.Name, unit.ActiveState, unit.SubState)
 			return unit.ActiveState == "active" && unit.SubState == "listening", nil
 		}
@@ -74,14 +76,14 @@ func (p *podmanService) isSocketServiceRunning() (bool, error) {
 func (p *podmanService) startSocketService() error {
 	ch := make(chan string)
 	// Start the service
-	_, err := p.Dbus.StartUnit(SERVICE_NAME, "replace", ch)
+	_, err := p.Dbus.StartUnit(ServiceName, "replace", ch)
 	if err != nil {
 		return err
 	}
 	// Wait for the result
 	result := <-ch
 	if result != "done" {
-		return fmt.Errorf("Failed to start service %s: %s", SERVICE_NAME, result)
+		return fmt.Errorf("Failed to start service %s: %s", ServiceName, result)
 	}
 
 	return nil

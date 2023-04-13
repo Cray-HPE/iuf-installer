@@ -3,33 +3,30 @@ package internal
 import (
 	"archive/tar"
 	"compress/gzip"
-	"context"
-	"fmt"
 	"io"
 	"os"
 	"strings"
 
-	"github.com/containers/podman/v3/pkg/bindings"
-	"github.com/containers/podman/v3/pkg/domain/entities"
 	"github.com/k3d-io/k3d/v5/pkg/logger"
 	"github.com/k3d-io/k3d/v5/pkg/types"
 )
 
 //go:generate mockgen -destination=../mocks/internal/image.go -package=mocks -source=image.go
 
+// ImageService is the interface for the image service
 type ImageService interface {
 	LoadImages() error
 	getImageNamesFromTarball() ([]string, error)
 	checkIfImagesExist(images []string) (bool, error)
 }
 
+// imageService is the implementation of the image service
 type imageService struct {
 	podmanService PodmanService
 }
 
-var ImageServiceInstance ImageService = newImageService(PodmanServiceInstance)
-
-func newImageService(podmanService PodmanService) ImageService {
+// NewImageService creates a new image service
+func NewImageService(podmanService PodmanService) ImageService {
 	return &imageService{
 		podmanService: podmanService,
 	}
@@ -101,26 +98,26 @@ func (i *imageService) checkIfImagesExist(images []string) (bool, error) {
 	}
 
 	// Establish a connection to the Podman service
-	ctx := context.Background()
-	conn, err := bindings.NewConnection(ctx, "unix:///run/podman/podman.sock")
-	if err != nil {
-		logger.Log().Errorf("Error connecting to Podman:", err)
-		return false, err
-	}
-	defer conn.Close()
+	// ctx := context.Background()
+	// conn, err := bindings.NewConnection(ctx, "unix:///run/podman/podman.sock")
+	// if err != nil {
+	// 	logger.Log().Errorf("Error connecting to Podman:", err)
+	// 	return false, err
+	// }
+	// defer conn.Close()
 
-	for _, image := range images {
-		filter := fmt.Sprintf("reference=%s", image)
-		options := entities.ImageListOptions{
-			Filters: []string{filter},
-		}
+	// for _, image := range images {
+	// 	filter := fmt.Sprintf("reference=%s", image)
+	// 	options := entities.ImageListOptions{
+	// 		Filters: []string{filter},
+	// 	}
 
-		imgList, err := images.List(ctx, conn, options)
-		if err != nil {
-			return false, err
-		}
+	// 	imgList, err := images.List(ctx, conn, options)
+	// 	if err != nil {
+	// 		return false, err
+	// 	}
 
-		return len(imgList) > 0, nil
-	}
+	// 	return len(imgList) > 0, nil
+	// }
 	return false, nil
 }

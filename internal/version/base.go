@@ -22,33 +22,11 @@
  OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package cmd
+package version
 
-import (
-	"os"
-
-	"github.com/spf13/cobra"
+var (
+	sha1ver   string                   // sha1 revision used to build the program
+	version   string                   // git tag version
+	buildTime string                   // when the executable was built
+	buildDate = "1970-01-01T00:00:00Z" // build date in ISO8601 format, output of $(date -u +'%Y-%m-%dT%H:%M:%SZ')
 )
-
-// rootCmd represents the base command when called without any subcommands
-var rootCmd = &cobra.Command{
-	Use:   "iuf-installer",
-	Short: "Create a k3d cluster for IUF",
-}
-
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
-func Execute() {
-	err := rootCmd.Execute()
-	if err != nil {
-		os.Exit(1)
-	}
-}
-
-func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.iuf-installer.yaml)")
-}
