@@ -1,0 +1,70 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.111.3"><meta name=description content="Cray Site Initializer documentation"><meta name=author content="Cray-HPE"><link rel=icon href=/cray-site-init/images/favicon.png type=image/png><title>Using a canu-generated shcd.json with csi - Cray Site Init</title><link href=/cray-site-init/css/nucleus.css?1681407555 rel=stylesheet><link href=/cray-site-init/css/fontawesome-all.min.css?1681407555 rel=stylesheet><link href=/cray-site-init/css/hybrid.css?1681407555 rel=stylesheet><link href=/cray-site-init/css/featherlight.min.css?1681407555 rel=stylesheet><link href=/cray-site-init/css/perfect-scrollbar.min.css?1681407555 rel=stylesheet><link href=/cray-site-init/css/auto-complete.css?1681407555 rel=stylesheet><link href=/cray-site-init/css/atom-one-dark-reasonable.css?1681407555 rel=stylesheet><link href=/cray-site-init/css/theme.css?1681407555 rel=stylesheet><link href=/cray-site-init/css/tabs.css?1681407555 rel=stylesheet><link href=/cray-site-init/css/hugo-theme.css?1681407555 rel=stylesheet><link href=/cray-site-init/css/theme-blue.css?1681407555 rel=stylesheet><link href=/cray-site-init/css/foo.css?1681407555 rel=stylesheet><link href=/cray-site-init/css/bar.css?1681407555 rel=stylesheet><script src=/cray-site-init/js/jquery-3.3.1.min.js?1681407555></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style></head><body data-url=/cray-site-init/shcds/using_shcds/><nav id=sidebar class=showVisitedLinks><div id=header-wrapper><div id=header><svg viewBox="0 0 240 80" xmlns="http://www.w3.org/2000/svg"><style>.small{font:italic 13px sans-serif}.heavy{font:700 30px sans-serif}</style><text x="40" y="35" class="heavy">CSI</text><text x="55" y="55" class="small">Cray Site Initializer</text></svg></div><div class=searchbox><label for=search-by><i class="fas fa-search"></i></label>
+<input data-search-input id=search-by type=search placeholder=Search...>
+<span data-search-clear><i class="fas fa-times"></i></span></div><script type=text/javascript src=/cray-site-init/js/lunr.min.js?1681407555></script>
+<script type=text/javascript src=/cray-site-init/js/auto-complete.js?1681407555></script>
+<script type=text/javascript>var baseurl="https://cray-hpe.github.io/cray-site-init/"</script><script type=text/javascript src=/cray-site-init/js/search.js?1681407555></script></div><div class=highlightable><ul class=topics><li data-nav-id=/cray-site-init/commands/ title=Commands class=dd-item><a href=/cray-site-init/commands/>Commands
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/cray-site-init/commands/iuf-installer/ title=iuf-installer class=dd-item><a href=/cray-site-init/commands/iuf-installer/>iuf-installer
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/cray-site-init/commands/iuf-installer_completion/ title="iuf-installer completion" class=dd-item><a href=/cray-site-init/commands/iuf-installer_completion/>iuf-installer completion
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/cray-site-init/commands/iuf-installer_completion_bash/ title="iuf-installer completion bash" class=dd-item><a href=/cray-site-init/commands/iuf-installer_completion_bash/>iuf-installer completion bash
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/cray-site-init/commands/iuf-installer_completion_fish/ title="iuf-installer completion fish" class=dd-item><a href=/cray-site-init/commands/iuf-installer_completion_fish/>iuf-installer completion fish
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/cray-site-init/commands/iuf-installer_completion_powershell/ title="iuf-installer completion powershell" class=dd-item><a href=/cray-site-init/commands/iuf-installer_completion_powershell/>iuf-installer completion powershell
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/cray-site-init/commands/iuf-installer_completion_zsh/ title="iuf-installer completion zsh" class=dd-item><a href=/cray-site-init/commands/iuf-installer_completion_zsh/>iuf-installer completion zsh
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/cray-site-init/commands/iuf-installer_init/ title="iuf-installer init" class=dd-item><a href=/cray-site-init/commands/iuf-installer_init/>iuf-installer init
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/cray-site-init/commands/iuf-installer_makedocs/ title="iuf-installer makedocs" class=dd-item><a href=/cray-site-init/commands/iuf-installer_makedocs/>iuf-installer makedocs
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/cray-site-init/shcds/ title=SHCDs class="dd-item
+parent"><a href=/cray-site-init/shcds/>SHCDs
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/cray-site-init/shcds/running_integration_tests/ title="Running integration tests with canu and csi" class=dd-item><a href=/cray-site-init/shcds/running_integration_tests/>Running integration tests with canu and csi
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/cray-site-init/shcds/using_shcds/ title="Using a canu-generated shcd.json with csi" class="dd-item active"><a href=/cray-site-init/shcds/using_shcds/>Using a canu-generated shcd.json with csi
+<i class="fas fa-check read-icon"></i></a></li></ul></li></ul><section id=prefooter><hr><ul><li><a class=padding href=# data-clear-history-toggle><i class="fas fa-history fa-fw"></i> Clear History</a></li></ul></section><section id=footer><p>Built with <a href=https://github.com/matcornic/hugo-theme-learn><i class="fas fa-heart"></i></a> from <a href=https://getgrav.org>Grav</a> and <a href=https://gohugo.io/>Hugo</a></p></section></div></nav><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Cray-HPE/cray-site-init/tree/main/hugo/content/shcds/using_shcds.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://data-vocabulary.org/Breadcrumb><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i></a></span>
+<span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links><a href=/cray-site-init/>IUF Installer</a> > <a href=/cray-site-init/shcds/>SHCDs</a> > Using a canu-generated shcd.json with csi</span></div><div class=progress><div class=wrapper><nav id=TableOfContents><ul><li><a href=#seed-files>Seed Files</a><ul><li><a href=#auto-generating-the-seed-files>Auto-generating the Seed Files</a></li></ul></li></ul><ul><li><a href=#add-testdata>Add testdata</a></li></ul></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Using a canu-generated shcd.json with csi</h1><p>In CSM 1.2+ <code>csi</code> will have the ability to ingest a JSON file and automatically generate the seed files needed for the <code>csi config init</code> command.</p><h2 id=seed-files>Seed Files</h2><p><code>csi config init</code> relies on several &ldquo;seed&rdquo; files in oder to produce a Shasta configuration payload:</p><ul><li><code>hmn_connections.json</code>: maps which switch ports on the Leaf switches are cabled to what the River node BMCs, PDUs, or other hardware</li><li><code>ncn_metadata.csv</code>: maps the MACs of the Management NCNs to their xnames and is used to initialize the management cluster</li><li><code>switch_metadata.csv</code>: maps the switch xname, brand, type, and model for the management switches in the system</li><li>(optional) <code>application_node_config.yaml</code>: offers additional control of the application node identification in SLS</li><li>(optional) <code>cabinets.yaml</code>: a mapping file is necessary for systems with non-sequential cabinet ID numbers</li></ul><p>The three non-optional files represent the <em>minimum</em> set of inputs <code>csi</code> needs to generate a new configuration payload.</p><h3 id=auto-generating-the-seed-files>Auto-generating the Seed Files</h3><p>In older versions of CSM, these seed files needed to be hand-crafted, which was painful and error-prone. This process has improved some in CSM v1.2 with the help of <a href=https://github.com/Cray-HPE/canu><code>canu</code></a>.</p><p>You can automatically generate the seed files in <code>csi</code> <em>after</em> you create a <code>shcd.json</code> using <code>canu</code>. This JSON file is a machine-readable version the SHCD.</p><p>Here is an example workflow:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Generate a machine-readable JSON file from an Excel spreadsheet</span>
+</span></span><span style=display:flex><span>canu validate shcd --shcd MySystem_SHCD.xlsx --tabs HMN --corners j20,u53 -a v1 --out MySystem.json
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Use the machine-readable JSON with csi to auto-generate the seed files</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># In this example, the hmn_connections.json file and the switch_metadata.csv are being generated</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># This allows you to generate the entire set of seed files or just certain ones</span>
+</span></span><span style=display:flex><span>csi config shcd --hmn-connections --switch-metadata MySystem.json
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Use the newly-generated files with the traditional workflow</span>
+</span></span><span style=display:flex><span>csi config init
+</span></span></code></pre></div><h1 id=running-integration-tests-with-canu-and-csi>Running integration tests with canu and csi</h1><p>The SHCD is the beginning source of truth for how a system is laid out and connected. The information found there is used through several different tools throughout the install of CSM, so if changes are made to an SHCD, it can be beneficial in both development and production environments to see how those changes might propagate.</p><p>To that end, there are some integration tests built in to <code>csi</code> that can test the flow mentioned above.</p><h2 id=add-testdata>Add testdata</h2><p><code>canu</code> requires several arguments in order to generate an <code>shcd.json</code>. The necessary arguments can be added to the <code>tests</code> struct in <code>cmd/shcd_integration_test.go</code> similar to the example below.</p><pre tabindex=0><code>var canus = []struct {
+	systemName string
+	version    string
+	tabs       string
+	corners    string
+}{
+	{
+		systemName: &#34;mysupercomputer&#34;,
+		version:    &#34;V1&#34;,
+		tabs:       &#34;25G_10G,NMN,HMN&#34;,
+		corners:    &#34;I14,S65,J16,T23,J20,U46&#34;,
+	},
+</code></pre><p>Once that test data is in place,</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>mkdir testdata/shcds
+</span></span><span style=display:flex><span><span style=color:#75715e># ensure SHCD spreadsheets are in testdata/shcds and the system name is somewhere in the filename</span>
+</span></span><span style=display:flex><span>cp mysupercomputer.xlsx testdata/shcds
+</span></span><span style=display:flex><span><span style=color:#75715e># make sure canu is installed</span>
+</span></span><span style=display:flex><span>make shcds
+</span></span></code></pre></div><p>On a successful test, you&rsquo;ll see output similar to:</p><pre tabindex=0><code>=== RUN   TestConfigShcd_GenerateSeeds
+2021/11/02 12:47:54 Running canu to create shcd.json for baldar...
+2021/11/02 12:47:56 Using schema file: ../internal/files/shcd-schema.json
+2021/11/02 12:47:56 Created switch_metadata.csv from SHCD data
+2021/11/02 12:47:56 Created hmn_connections.json from SHCD data
+2021/11/02 12:47:56 Running canu to create shcd.json for drax...
+2021/11/02 12:47:58 Using schema file: ../internal/files/shcd-schema.json
+2021/11/02 12:47:58 Created switch_metadata.csv from SHCD data
+2021/11/02 12:47:56 Created hmn_connections.json from SHCD data
+2021/11/02 12:47:58 Running canu to create shcd.json for ego...
+...
+...
+</code></pre><p><code>testdata/shcds/</code> will also have folders matching each of the system names and contain the following files:</p><ul><li><code>application_node_config.yaml</code></li><li><code>shcd.json</code></li><li><code>switch_metadata.csv</code></li><li><code>hmn_connections.json</code></li></ul><footer class=footline></footer></div></div><div id=navigation></div></section><div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/cray-site-init/js/clipboard.min.js?1681407555></script>
+<script src=/cray-site-init/js/perfect-scrollbar.min.js?1681407555></script>
+<script src=/cray-site-init/js/perfect-scrollbar.jquery.min.js?1681407555></script>
+<script src=/cray-site-init/js/jquery.sticky.js?1681407555></script>
+<script src=/cray-site-init/js/featherlight.min.js?1681407555></script>
+<script src=/cray-site-init/js/highlight.pack.js?1681407555></script>
+<script>hljs.initHighlightingOnLoad()</script><script src=/cray-site-init/js/modernizr.custom-3.6.0.js?1681407555></script>
+<script src=/cray-site-init/js/learn.js?1681407555></script>
+<script src=/cray-site-init/js/hugo-learn.js?1681407555></script>
+<script src=/cray-site-init/mermaid/mermaid.js?1681407555></script>
+<script>mermaid.initialize({startOnLoad:!0})</script></body></html>
