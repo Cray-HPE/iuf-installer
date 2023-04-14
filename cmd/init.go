@@ -60,6 +60,7 @@ func init() {
 func casmInit(cmd *cobra.Command, args []string) error {
 	PodmanServiceInstance := internal.NewPodmanService()
 	ImageServiceInstance := internal.NewImageService(PodmanServiceInstance)
+	K3dServiceInstance := internal.NewK3dService(cmd.Context())
 
 	// configure podman
 	err := PodmanServiceInstance.PodmanInit()
@@ -72,6 +73,10 @@ func casmInit(cmd *cobra.Command, args []string) error {
 		return err
 	}
 	// start k3d server
+	err = K3dServiceInstance.DeployK3d()
+	if err != nil {
+		return err
+	}
 	// print out kubeconfig and kube info
 	return nil
 }

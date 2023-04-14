@@ -1,14 +1,11 @@
 package internal
 
 import (
-	"archive/tar"
-	"compress/gzip"
-	"io"
 	"os"
+	"os/exec"
 	"strings"
 
 	"github.com/k3d-io/k3d/v5/pkg/logger"
-	"github.com/k3d-io/k3d/v5/pkg/types"
 )
 
 //go:generate mockgen -destination=../mocks/internal/image.go -package=mocks -source=image.go
@@ -16,8 +13,6 @@ import (
 // ImageService is the interface for the image service
 type ImageService interface {
 	LoadImages() error
-	getImageNamesFromTarball() ([]string, error)
-	checkIfImagesExist(images []string) (bool, error)
 }
 
 // imageService is the implementation of the image service
@@ -32,92 +27,73 @@ func NewImageService(podmanService PodmanService) ImageService {
 	}
 }
 
+var k3dImages = []string{"artifactory.algol60.net/csm-docker/stable/ghcr.io/k3d-io/k3d-tools:5.4.9"}
+
 func (i *imageService) LoadImages() error {
 	logger.Log().Infof("Loading images")
-	// get image names from tarball
-	images, err := i.getImageNamesFromTarball()
-	if err != nil {
-		logger.Log().Errorf("Error getting image names from tarball: %s\n", err)
-		return err
+	// get untar targetDir
+	targetDir := strings.Split(AppConfig.Tarball, "/")[len(strings.Split(AppConfig.Tarball, "/"))-1]
+	targetDir = "/tmp/" + strings.Split(targetDir, ".tar")[0]
+	logger.Log().Infof("Target dir: %s\n", targetDir)
+	// check if targetDir exists or force is set
+	if _, err := os.Stat(targetDir); os.IsNotExist(err) || AppConfig.Force {
+		// remove targetDir
+		err := os.RemoveAll(targetDir)
+		if err != nil {
+			logger.Log().Warnf("Error removing directory %s: %s\n", targetDir, err)
+		}
+		// untar
+		cmd := exec.Command("tar", "xzf", AppConfig.Tarball, "-C", "/tmp")
+		err = cmd.Run()
+		if err != nil {
+			logger.Log().Errorf("Error extracting %s: %s", AppConfig.Tarball, err)
+			return err
+		}
 	}
 
-	// check if images are already loaded (skip if force is set)
-	imagesExist, err := i.checkIfImagesExist(images)
-	if err != nil {
-		logger.Log().Errorf("Error checking if images exist: %s\n", err)
-		return err
-	}
-	if !imagesExist {
-		// untar images
-		// load images
+	// load images
+	for _, k3dImage := range k3dImages {
+		logger.Log().Infof("Loading image %s from extracted file", k3dImage)
+		cmd := exec.Command("tar", "-cf", targetDir+"/docker/"+k3dImage+".tar", targetDir+"/docker/"+k3dImage)
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		if err := cmd.Run(); err != nil {
+			logger.Log().Errorf("Error creating tarball for %s: %s", k3dImage, err)
+			return err
+		}
+
+		logger.Log().Infof("Loading image %s into podman", k3dImage)
+		cmd = exec.Command("podman", "load", "-i", targetDir+"/docker/"+k3dImage)
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		err := cmd.Run()
+		if err != nil {
+			logger.Log().Errorf("Error loading image %s: %s", k3dImage, err)
+			return err
+		}
+
+		newTag := strings.Split(k3dImage, "stable/")[1]
+		logger.Log().Infof("Re-tag image %s -> %s ", k3dImage, newTag)
+		cmd = exec.Command("podman", "image", "tag", "localhost"+targetDir+"/docker/"+k3dImage, newTag)
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		err = cmd.Run()
+		if err != nil {
+			logger.Log().Errorf("Error re-tagging image %s: %s", k3dImage, err)
+			return err
+		}
+
+		// load airgap images
+		logger.Log().Infof("Loading airgap images")
+		cmd = exec.Command("podman", "load", "-i", targetDir+"/docker/k3s-airgap-images-amd64.tar")
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		err = cmd.Run()
+		if err != nil {
+			logger.Log().Errorf("Error loading airgap images %s: %s", k3dImage, err)
+			return err
+		}
+
 	}
 	return nil
-}
-
-// getImageNamesFromTarball gets the image names from the tarball
-func (i *imageService) getImageNamesFromTarball() ([]string, error) {
-	var res []string
-	file, err := os.Open(AppConfig.Tarball)
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-
-	// gzip reader
-	gzipReader, err := gzip.NewReader(file)
-	if err != nil {
-		panic(err)
-	}
-	defer gzipReader.Close()
-
-	tarReader := tar.NewReader(gzipReader)
-
-	// iterate through the files in the archive
-	for {
-		header, err := tarReader.Next()
-
-		if err != nil {
-			if err == io.EOF {
-				break // end of tar archive
-			}
-			panic(err)
-		}
-		if strings.Contains(header.Name, types.DefaultToolsImageRepo) && header.Typeflag == tar.TypeDir {
-			imageNameWithTagAndSlash := strings.Split(header.Name, "/docker/")[1]
-			imageNameWIthTag := strings.TrimRight(imageNameWithTagAndSlash, "")
-			res = append(res, imageNameWIthTag)
-		}
-	}
-	logger.Log().Infof("Images: %v\n", res)
-	return res, nil
-}
-
-func (i *imageService) checkIfImagesExist(images []string) (bool, error) {
-	if AppConfig.Force {
-		return false, nil
-	}
-
-	// Establish a connection to the Podman service
-	// ctx := context.Background()
-	// conn, err := bindings.NewConnection(ctx, "unix:///run/podman/podman.sock")
-	// if err != nil {
-	// 	logger.Log().Errorf("Error connecting to Podman:", err)
-	// 	return false, err
-	// }
-	// defer conn.Close()
-
-	// for _, image := range images {
-	// 	filter := fmt.Sprintf("reference=%s", image)
-	// 	options := entities.ImageListOptions{
-	// 		Filters: []string{filter},
-	// 	}
-
-	// 	imgList, err := images.List(ctx, conn, options)
-	// 	if err != nil {
-	// 		return false, err
-	// 	}
-
-	// 	return len(imgList) > 0, nil
-	// }
-	return false, nil
 }
