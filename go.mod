@@ -3,7 +3,7 @@ module github.com/Cray-HPE/iuf-installer
 go 1.19
 
 require (
-	github.com/golang/mock v1.5.0
+	github.com/golang/mock v1.6.0
 	github.com/k3d-io/k3d/v5 v5.4.9
 	github.com/spf13/cobra v1.7.0
 )
