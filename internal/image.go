@@ -27,7 +27,10 @@ func NewImageService(podmanService PodmanService) ImageService {
 	}
 }
 
-var k3dImages = []string{"artifactory.algol60.net/csm-docker/stable/ghcr.io/k3d-io/k3d-tools:5.4.9"}
+var k3dImages = []string{
+	"artifactory.algol60.net/csm-docker/stable/ghcr.io/k3d-io/k3d-tools:5.4.9",
+	"artifactory.algol60.net/csm-docker/stable/docker.io/rancher/k3s:v1.21.7-k3s1",
+}
 
 func (i *imageService) LoadImages() error {
 	logger.Log().Infof("Loading images")
@@ -82,6 +85,8 @@ func (i *imageService) LoadImages() error {
 			logger.Log().Errorf("Error re-tagging image %s: %s", k3dImage, err)
 			return err
 		}
+		// make sure k3d is going to use our image
+		os.Setenv("K3D_IMAGE_TOOLS", newTag)
 
 		// load airgap images
 		logger.Log().Infof("Loading airgap images")
